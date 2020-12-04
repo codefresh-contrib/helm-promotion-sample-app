@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: application-settings
+data:
+  sample.ini: |
+    # possible values : production, development, staging, qa
+    app_mode = {{ .Values.appMode }}
+
+    [security]
+    # Path to SSL certificates
+    certificates = {{ .Values.certificatePath }}
+
+    [paypal]
+    paypal_url = {{ .Values.paypalURLLocation }}
+
+    [mysql]
+    db_user = {{ .Values.databaseUser }}
+    db_password = {{ .Values.databasePassword }}
+
+
+

@@ -19,5 +19,13 @@ service:
   port: 80
 
 
+## Application level settings  
+appMode: qa
+certificatePath: /etc/ssl/qa
+paypalURLLocation: https://qa.paypal.example.com
+databaseUser: qauser
+databasePassword: qapassword
+
+
 
 
