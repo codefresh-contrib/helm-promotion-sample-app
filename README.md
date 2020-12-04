@@ -1,0 +1,1 @@
+# helm-promotion-sample-app
