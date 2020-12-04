@@ -7,7 +7,10 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build 
 
 FROM scratch
-COPY --from=build-env /tmp/simple-go-app/simple-web-app /app/simple-web-app
+COPY --from=build-env /tmp/simple-go-app/helm-promotion-sample-app /app/helm-promotion-sample-app
+
+COPY settings.ini /config/settings.ini
+
 
 EXPOSE 8080
-CMD ["/app/simple-web-app"]
+CMD ["/app/helm-promotion-sample-app"]
