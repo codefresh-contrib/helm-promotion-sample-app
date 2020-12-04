@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: application-settings
 data:
-  sample.ini: |
+  settings.ini: |
     # possible values : production, development, staging, qa
     app_mode = {{ .Values.appMode }}
 
