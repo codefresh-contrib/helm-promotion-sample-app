@@ -23,8 +23,8 @@ service:
 appMode: qa
 certificatePath: /etc/ssl/qa
 paypalURLLocation: https://qa.paypal.example.com
-databaseUser: qauser
-databasePassword: qapassword
+databaseUser: qa-user
+databasePassword: qa-password
 
 
 
