@@ -1,0 +1,56 @@
+version: "1.0"
+stages:
+  - "clone"
+  - "validate"
+  - "build"
+  - "staging"
+
+steps:
+  clone:
+    title: "Cloning repository"
+    type: "git-clone"
+    repo: "codefresh-contrib/helm-promotion-sample-app"
+    revision: '${{CF_REVISION}}'
+    stage: "clone"
+  prechecks:
+    type: parallel
+    stage: 'validate'
+    steps:
+      lint:
+        title: Lint
+        working_directory: "${{clone}}"
+        image: golangci/golangci-lint:v1.33.0
+        commands:
+          - golangci-lint run -v .
+      securityAnalysis:
+        title: Security Scan
+        working_directory: "${{clone}}"
+        image: 'securego/gosec:v2.5.0'
+        commands:
+          - gosec ./...      
+  build:
+    title: "Building Docker image"
+    type: "build"
+    image_name: "kostiscodefresh/helm-promotion-app"
+    working_directory: "${{clone}}"
+    tags:
+    - "latest"
+    - '${{CF_SHORT_REVISION}}'
+    dockerfile: "Dockerfile"
+    stage: "build"
+    registry: dockerhub  
+
+  deployStaging:
+    title: Deploying to Staging
+    type: helm
+    stage: staging
+    working_directory: ./helm-promotion-sample-app
+    arguments:
+      action: install
+      chart_name: ./chart/sample-app
+      release_name: example-staging
+      helm_version: 3.0.2
+      kube_context: 'mydemoAkscluster@BizSpark Plus'
+      namespace: staging
+      custom_value_files:
+      - ./chart/values-staging.yaml
