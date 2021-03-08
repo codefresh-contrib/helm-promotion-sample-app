@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: kostiscodefresh/helm-promotion-app
+  repository: mklimko/helm-promotion-app
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
