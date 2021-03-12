@@ -17,7 +17,7 @@ type configurationListHandler struct {
 
 func (h *configurationListHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	fmt.Fprintf(w, "<h2>I am a GO application running inside Kubernetes.<h2> <h3>My properties are:</h3><ul>")
+	fmt.Fprintf(w, "<h2>I am a GO application running inside Kubernetes. v1<h2> <h3>My properties are:</h3><ul>")
 	fmt.Fprintf(w, "<li>app_mode: "+h.appMode+"</li>")
 	fmt.Fprintf(w, "<li>certificatePath: "+h.certificatePath+"</li>")
 	fmt.Fprintf(w, "<li>paypal_url: "+h.paypalURL+"</li>")
