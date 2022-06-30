@@ -1,0 +1,26 @@
+version: "1.0"
+stages:
+  - "clone"
+  - "build"
+  - "deployment"
+
+steps:
+  clone:
+    title: "Cloning repository"
+    type: "git-clone"
+    repo: "codefresh-contrib/helm-promotion-sample-app"
+    revision: '${{CF_REVISION}}'
+    stage: "clone"
+
+  build:
+    title: "Building Docker image"
+    type: "build"
+    image_name: "kostiscodefresh/helm-promotion-app"
+    working_directory: "${{clone}}"
+    tags:
+    - "latest"
+    - '${{CF_SHORT_REVISION}}'
+    dockerfile: "Dockerfile"
+    stage: "build"
+    registry: dockerhub  
+  

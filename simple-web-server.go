@@ -51,5 +51,8 @@ func main() {
 	fmt.Println("Simple web server is starting on port 8080...")
 	http.Handle("/", &clh)
 	http.HandleFunc("/health", healthHandler)
-	http.ListenAndServe(":8080", nil)
+	err = http.ListenAndServe(":8080", nil)
+	if err != nil {
+		fmt.Printf("Failed to start server at port 8080: %v", err)
+	}
 }

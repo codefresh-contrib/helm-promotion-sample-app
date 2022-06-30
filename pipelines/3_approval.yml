@@ -1,0 +1,58 @@
+version: "1.0"
+stages:
+  - "clone"
+  - "build"
+  - "staging"
+  - "prod"
+
+steps:
+  clone:
+    title: "Cloning repository"
+    type: "git-clone"
+    repo: "codefresh-contrib/helm-promotion-sample-app"
+    revision: '${{CF_REVISION}}'
+    stage: "clone"
+
+  build:
+    title: "Building Docker image"
+    type: "build"
+    image_name: "kostiscodefresh/helm-promotion-app"
+    working_directory: "${{clone}}"
+    tags:
+    - "latest"
+    - '${{CF_SHORT_REVISION}}'
+    dockerfile: "Dockerfile"
+    stage: "build"
+    registry: dockerhub  
+  deployStaging:
+    title: Deploying to Staging
+    type: helm
+    stage: staging
+    working_directory: ./helm-promotion-sample-app
+    arguments:
+      action: install
+      chart_name: ./chart/sample-app
+      release_name: example-staging
+      helm_version: 3.0.2
+      kube_context: 'mydemoAkscluster@BizSpark Plus'
+      namespace: staging
+      custom_value_files:
+      - ./chart/values-staging.yaml
+  askForPermission:
+    type: pending-approval
+    stage: prod
+    title: Deploy to production?
+  deployProd:
+    title: Deploying to Production
+    type: helm
+    stage: prod
+    working_directory: ./helm-promotion-sample-app
+    arguments:
+      action: install
+      chart_name: ./chart/sample-app
+      release_name: example-prod
+      helm_version: 3.0.2
+      kube_context: 'mydemoAkscluster@BizSpark Plus'
+      namespace: production
+      custom_value_files:
+      - ./chart/values-prod.yaml
